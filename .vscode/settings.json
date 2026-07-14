@@ -1,0 +1,8 @@
+{
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "files.trimTrailingWhitespace": true,
+  "dart.lineLength": 100,
+  "dart.flutterSdkPath": ""
+}
+

@@ -1,0 +1,42 @@
+name: samtech_workspace
+description: Workspace racine de la plateforme logicielle SAMTECH.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: '>=3.12.0 <4.0.0'
+
+workspace:
+  - apps/samtech_crm
+  - packages/analytics
+  - packages/authentication
+  - packages/backup
+  - packages/license_manager
+  - packages/notifications
+  - packages/pdf_engine
+  - packages/security
+  - packages/ui_kit
+
+dev_dependencies:
+  melos: ^8.2.2
+
+melos:
+  scripts:
+    format:
+      description: Vérifie le formatage de tous les packages.
+      exec:
+        command: dart format --output=none --set-exit-if-changed .
+        concurrency: 1
+    analyze:
+      description: Exécute l'analyse statique de tout le workspace.
+      exec:
+        command: flutter analyze
+        concurrency: 1
+    test:
+      description: Exécute les tests des packages qui en possèdent.
+      exec:
+        command: flutter test
+        concurrency: 1
+        failFast: true
+      packageFilters:
+        flutter: true

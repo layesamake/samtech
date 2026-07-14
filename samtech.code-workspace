@@ -1,0 +1,10 @@
+{
+  "folders": [{ "path": "." }],
+  "settings": {
+    "editor.formatOnSave": true,
+    "files.exclude": { "**/.dart_tool": true, "**/build": true }
+  },
+  "extensions": {
+    "recommendations": ["dart-code.dart-code", "dart-code.flutter", "eamodio.gitlens"]
+  }
+}
