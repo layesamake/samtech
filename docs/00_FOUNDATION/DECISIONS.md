@@ -77,10 +77,10 @@ Ce document consigne les décisions structurantes. Une décision validée ne doi
 ## ADR-010 — Base locale relationnelle chiffrée
 
 - Date : 14 juillet 2026
-- Statut : modèle logique validé ; intégration technique à prototyper
-- Décision : utiliser SQLite chiffré comme stockage local et Drift comme couche d'accès candidate.
+- Statut : validé avec réserves par `SPK-DB-001`
+- Décision : utiliser Drift avec `NativeDatabase` et `sqlite3` 3.x configuré pour embarquer SQLite3MultipleCiphers ; utiliser le schéma `chacha20` et une clé brute aléatoire de 256 bits conservée derrière un port vers Android Keystore ou iOS Keychain.
 - Motif : contraintes relationnelles, requêtes statistiques, migrations et fonctionnement Android/iOS offline.
-- Conséquences : activer les clés étrangères, utiliser des transactions et valider la combinaison Drift/chiffrement avant génération du projet.
+- Conséquences : activer les clés étrangères et les transactions, ouvrir la base en isolate, désactiver les sauvegardes Android incohérentes, tester chaque migration et ne pas intégrer de table métier avant validation sur appareil Android physique et sur iOS. Les réserves et le protocole de rotation futur sont détaillés dans `docs/03_ARCHITECTURE/SPIKE_DB_ENCRYPTION.md`.
 
 ## ADR-011 — Primitives de données durables
 

@@ -34,9 +34,4 @@ melos:
         concurrency: 1
     test:
       description: Exécute les tests des packages qui en possèdent.
-      exec:
-        command: flutter test
-        concurrency: 1
-        failFast: true
-      packageFilters:
-        flutter: true
+      run: dart run melos exec --flutter --fail-fast -- "flutter test"

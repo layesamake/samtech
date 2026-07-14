@@ -27,6 +27,9 @@ Utiliser en priorité les icônes Material Symbols ou les équivalents Cupertino
 | Puce ou statut | 16–18 | composant complet 44–48 |
 | Illustration d'état | 48–80 | non interactive |
 
+Le token `SamtechIconSize.illustration` fixe à 64 points la taille initiale des
+illustrations d'état du socle Flutter.
+
 ## 4. Mappage conceptuel
 
 | Concept | Icône recommandée | Libellé visible requis |
@@ -60,4 +63,3 @@ Les icônes interactives définissent normal, pressé, focus et désactivé. Une
 - Ne pas utiliser deux icônes différentes pour le même concept selon les modules.
 - Ne pas utiliser une icône « envoyer » si l'action ne fait qu'ouvrir WhatsApp sans envoyer.
 - Ne pas utiliser un cadenas pour représenter à la fois PIN, licence et sauvegarde chiffrée sans libellé.
-

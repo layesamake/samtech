@@ -23,8 +23,8 @@
 | État et injection | `flutter_riverpod`, `riverpod_annotation` | retenu sous réserve du spike |
 | Navigation | `go_router`, éventuellement `go_router_builder` | retenu |
 | Base relationnelle | `drift`, `drift_flutter` | retenu logiquement |
-| SQLite chiffré | intégration SQLCipher compatible Drift | spike bloquant |
-| Coffre sécurisé | `flutter_secure_storage` ou adaptateur natif | candidat, tester migrations/backup |
+| SQLite chiffré | `sqlite3` 3.x avec hook `sqlite3mc` | retenu avec réserves par `SPK-DB-001` |
+| Coffre sécurisé | `flutter_secure_storage` derrière un port SAMTECH | retenu avec réserves Android/iOS |
 | Biométrie | `local_auth` | candidat officiel Flutter |
 | Notifications | `flutter_local_notifications`, `timezone` | candidat |
 | HTTP licence | `http` | suffisant, encapsulé |
@@ -54,7 +54,14 @@
 
 ### SPK-DB-001 — Drift + SQLite chiffré
 
-Valider ouverture background, migrations, Android/iOS, rotation de clé, sauvegarde et performances.
+Statut : validé avec réserves le 14 juillet 2026. Le prototype isolé utilise
+Drift 2.34.0, `sqlite3` 3.4.0, SQLite3MultipleCiphers 2.3.6 et
+`flutter_secure_storage` 10.3.1. Ouverture en isolate, migrations,
+transactions, mauvaise clé, fichiers bruts, clés étrangères, WAL, erreurs de
+coffre, rotation et mesures locales sont couverts. Android x64 et le Keystore
+ont été validés sur émulateur ; iOS et les appareils physiques restent
+obligatoires avant intégration. Voir
+`docs/03_ARCHITECTURE/SPIKE_DB_ENCRYPTION.md`.
 
 ### SPK-LIC-001 — Signature de licence
 
@@ -80,6 +87,9 @@ Les versions minimales Android/iOS seront définies après résolution des candi
 
 - Riverpod : https://riverpod.dev/
 - Drift : https://drift.simonbinder.eu/
+- Chiffrement Drift : https://drift.simonbinder.eu/platforms/encryption/
+- SQLite3MultipleCiphers : https://github.com/utelle/SQLite3MultipleCiphers
+- sqlite3 : https://pub.dev/packages/sqlite3
 - go_router : https://pub.dev/packages/go_router
 - local_auth : https://pub.dev/packages/local_auth
 - flutter_secure_storage : https://pub.dev/packages/flutter_secure_storage
@@ -88,4 +98,3 @@ Les versions minimales Android/iOS seront définies après résolution des candi
 - pdf : https://pub.dev/packages/pdf
 - printing : https://pub.dev/packages/printing
 - url_launcher : https://pub.dev/packages/url_launcher
-

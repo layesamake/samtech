@@ -8,6 +8,10 @@ void main() {
     expect(SamtechSpacing.space12, 48);
   });
 
+  test('illustration icon size stays within the documented range', () {
+    expect(SamtechIconSize.illustration, inInclusiveRange(48, 80));
+  });
+
   test('light theme exposes the documented primary color', () {
     expect(SamtechTheme.light().colorScheme.primary.toARGB32(), 0xFF174A7E);
   });

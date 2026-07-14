@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:samtech_ui_kit/samtech_ui_kit.dart';
 
-import '../../../../app/router/app_router.dart';
+import '../routes/startup_routes.dart';
 
 /// Confirms that navigation is operational without exposing a business module.
 class BootstrapStatusScreen extends StatelessWidget {
@@ -16,9 +17,9 @@ class BootstrapStatusScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text('Navigation opérationnelle'),
-            const SizedBox(height: 16),
+            const SizedBox(height: SamtechSpacing.space4),
             OutlinedButton(
-              onPressed: () => context.go(AppRoutePaths.startup),
+              onPressed: () => context.go(StartupRoutePaths.startup),
               child: const Text('Retour au démarrage'),
             ),
           ],

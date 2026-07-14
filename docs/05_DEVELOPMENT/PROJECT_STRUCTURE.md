@@ -24,7 +24,6 @@ samtech/
 ├── docs/
 ├── scripts/
 ├── test/
-├── pubspec.yaml              # Pub workspace et configuration Melos
 └── pubspec.yaml
 ```
 

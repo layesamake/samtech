@@ -1,0 +1,32 @@
+name: spk_db_001
+description: Prototype isolé Drift avec SQLite chiffré pour SAMTECH.
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.12.2
+
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc
+
+dependencies:
+  drift: 2.34.0
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: ^10.3.1
+  path_provider: ^2.1.5
+  sqlite3: ^3.1.4
+
+dev_dependencies:
+  build_runner: ^2.10.4
+  drift_dev: 2.34.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

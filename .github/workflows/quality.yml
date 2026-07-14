@@ -1,0 +1,32 @@
+name: Qualité
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+      - name: Installer Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.6
+          cache: true
+      - name: Résoudre le workspace
+        run: dart pub get
+      - name: Vérifier le formatage
+        run: dart run melos run format
+      - name: Exécuter l'analyse statique
+        run: dart run melos run analyze
+      - name: Exécuter les tests
+        run: dart run melos run test

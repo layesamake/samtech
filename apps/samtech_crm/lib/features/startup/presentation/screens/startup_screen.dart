@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:samtech_ui_kit/samtech_ui_kit.dart';
 
-import '../../../../app/router/app_router.dart';
+import '../routes/startup_routes.dart';
 
 /// Minimal Sprint 0 screen used to validate application startup and routing.
 class StartupScreen extends StatelessWidget {
@@ -20,7 +20,7 @@ class StartupScreen extends StatelessWidget {
             children: [
               Icon(
                 Icons.check_circle_outline,
-                size: 64,
+                size: SamtechIconSize.illustration,
                 color: Theme.of(context).colorScheme.primary,
                 semanticLabel: 'Socle initialisé',
               ),
@@ -37,7 +37,7 @@ class StartupScreen extends StatelessWidget {
               ),
               const SizedBox(height: SamtechSpacing.space6),
               FilledButton(
-                onPressed: () => context.go(AppRoutePaths.bootstrapStatus),
+                onPressed: () => context.go(StartupRoutePaths.bootstrapStatus),
                 child: const Text('Vérifier la navigation'),
               ),
             ],

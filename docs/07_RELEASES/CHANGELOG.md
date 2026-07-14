@@ -6,6 +6,8 @@ Toutes les modifications notables sont consignées ici selon les principes de Ke
 
 ### Ajouté
 
+- Prototype isolé `SPK-DB-001` pour Drift avec SQLite3MultipleCiphers, coffre natif, migrations, transactions, rotation, inspection des journaux et benchmark fictif.
+- Rapport d'architecture `SPIKE_DB_ENCRYPTION.md` avec comparaison des candidats, résultats, réserves natives et recommandation d'intégration.
 - Sprint 0 : application Flutter 3.44.6 générée pour Android et iOS.
 - Pub workspace de huit packages partagés et orchestration Melos 8.2.2.
 - Bootstrap Riverpod, navigation `go_router` et feature technique de démarrage.
@@ -45,3 +47,12 @@ Toutes les modifications notables sont consignées ici selon les principes de Ke
 - Documentation design remplacée par une architecture prête pour le prototypage utilisateur.
 - Documentation de base de données remplacée par un modèle logique prêt pour validation technique.
 - Documentation technique remplacée par une architecture prête pour les spikes et le découpage des développements.
+
+### Corrigé
+
+- Script de tests Melos rendu non interactif pour les terminaux sans TTY et la CI.
+- Dépendance inverse supprimée entre les écrans `startup` et le routeur global.
+- Écran de route inconnue sécurisé et couvert par un test de navigation.
+- Dimensions visuelles du démarrage centralisées dans `samtech_ui_kit`.
+- Signature Android release par clé debug supprimée.
+- Workflow GitHub Actions ajouté pour le formatage, l'analyse et les tests.

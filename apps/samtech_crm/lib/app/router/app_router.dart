@@ -1,25 +1,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/startup/presentation/routes/startup_routes.dart';
 import '../../features/startup/presentation/screens/bootstrap_status_screen.dart';
 import '../../features/startup/presentation/screens/startup_screen.dart';
-
-abstract final class AppRoutePaths {
-  static const startup = '/';
-  static const bootstrapStatus = '/bootstrap-status';
-}
+import 'route_not_found_screen.dart';
 
 /// Declarative router composed at the application boundary.
 final appRouterProvider = Provider<GoRouter>((ref) {
   final router = GoRouter(
-    initialLocation: AppRoutePaths.startup,
+    initialLocation: StartupRoutePaths.startup,
+    errorBuilder: (context, state) => const RouteNotFoundScreen(),
     routes: [
       GoRoute(
-        path: AppRoutePaths.startup,
+        path: StartupRoutePaths.startup,
         builder: (context, state) => const StartupScreen(),
       ),
       GoRoute(
-        path: AppRoutePaths.bootstrapStatus,
+        path: StartupRoutePaths.bootstrapStatus,
         builder: (context, state) => const BootstrapStatusScreen(),
       ),
     ],
