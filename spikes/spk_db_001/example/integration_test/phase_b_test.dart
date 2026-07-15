@@ -14,15 +14,25 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Integration - Phase B: Open and Check Persistence', (WidgetTester tester) async {
+  testWidgets('Integration - Phase B: Open and Check Persistence', (
+    WidgetTester tester,
+  ) async {
     final docsDir = await getApplicationDocumentsDirectory();
     final dbFile = File(p.join(docsDir.path, 'app_integration.db'));
-    
-    expect(dbFile.existsSync(), true, reason: 'La base de la Phase A devrait exister.');
+
+    expect(
+      dbFile.existsSync(),
+      true,
+      reason: 'La base de la Phase A devrait exister.',
+    );
 
     final keyManager = KeyManager();
     final mainKey = await keyManager.getMainKey();
-    expect(mainKey, isNotNull, reason: 'La clé de la Phase A devrait exister dans le Keystore.');
+    expect(
+      mainKey,
+      isNotNull,
+      reason: 'La clé de la Phase A devrait exister dans le Keystore.',
+    );
 
     final keyBytes = utf8.encode(mainKey!);
     final keyHash = sha256.convert(keyBytes).toString();
@@ -34,14 +44,35 @@ void main() {
 
     // Vérification du marqueur de la phase A
     final contacts = await dbService.db.select(dbService.db.contacts).get();
-    expect(contacts.any((c) => c.id == 'NATIVE_TEST_MARKER'), true, reason: 'Le marqueur de la Phase A doit être présent.');
-    
+    expect(
+      contacts.any((c) => c.id == 'NATIVE_TEST_MARKER'),
+      true,
+      reason: 'Le marqueur de la Phase A doit être présent.',
+    );
+
     // Test transaction & rollback
     try {
       await dbService.db.createContactTransaction(
-        Contact(id: 'c2', organizationId: 'org1', phoneNormalized: '456', createdAt: 1, updatedAt: 1, recordVersion: 1),
+        Contact(
+          id: 'c2',
+          organizationId: 'org1',
+          phoneNormalized: '456',
+          createdAt: 1,
+          updatedAt: 1,
+          recordVersion: 1,
+        ),
         // CommercialProfile with DIFFERENT contactId to trigger Foreign Key error
-        CommercialProfile(id: 'p2', organizationId: 'org1', contactId: 'UNKNOWN', prospectStatus: 'new', firstContactAt: 1, isClient: true, createdAt: 1, updatedAt: 1, recordVersion: 1)
+        CommercialProfile(
+          id: 'p2',
+          organizationId: 'org1',
+          contactId: 'UNKNOWN',
+          prospectStatus: 'new',
+          firstContactAt: 1,
+          isClient: true,
+          createdAt: 1,
+          updatedAt: 1,
+          recordVersion: 1,
+        ),
       );
       fail('Devrait throw FK constraint error');
     } catch (e) {
@@ -49,7 +80,11 @@ void main() {
     }
 
     final rolledBack = await dbService.db.select(dbService.db.contacts).get();
-    expect(rolledBack.any((c) => c.id == 'c2'), false, reason: 'Transaction doit être rolled back');
+    expect(
+      rolledBack.any((c) => c.id == 'c2'),
+      false,
+      reason: 'Transaction doit être rolled back',
+    );
 
     await dbService.close();
 
@@ -57,7 +92,7 @@ void main() {
     final wrongDb = AppDatabase(openEncryptedConnection(dbFile, 'wrong_key'));
     await expectLater(
       () async => await wrongDb.customSelect('SELECT 1').get(),
-      throwsA(anything)
+      throwsA(anything),
     );
     await wrongDb.close();
 
@@ -78,7 +113,7 @@ void main() {
     final failingDbService = DatabaseService(keyManager, dbFile);
     await expectLater(
       () async => await failingDbService.initialize(),
-      throwsException // DatabaseKeyLostException
+      throwsException, // DatabaseKeyLostException
     );
 
     // Restaurer la clé pour la suite
@@ -106,15 +141,20 @@ void main() {
     final oldDb = AppDatabase(openEncryptedConnection(dbFile, oldKey!));
     await expectLater(
       () async => await oldDb.customSelect('SELECT 1').get(),
-      throwsA(anything)
+      throwsA(anything),
     );
     await oldDb.close();
 
     // Ouverture avec la nouvelle clé
     dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
-    final contactsAfterRotation = await dbService.db.select(dbService.db.contacts).get();
-    expect(contactsAfterRotation.any((c) => c.id == 'NATIVE_TEST_MARKER'), true);
+    final contactsAfterRotation = await dbService.db
+        .select(dbService.db.contacts)
+        .get();
+    expect(
+      contactsAfterRotation.any((c) => c.id == 'NATIVE_TEST_MARKER'),
+      true,
+    );
     await dbService.close();
 
     print('PHASE_B_OK');

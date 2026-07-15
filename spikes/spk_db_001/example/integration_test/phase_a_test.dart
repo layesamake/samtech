@@ -14,14 +14,16 @@ import 'package:path_provider/path_provider.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Integration - Phase A: Init, Encrypt and Insert', (WidgetTester tester) async {
+  testWidgets('Integration - Phase A: Init, Encrypt and Insert', (
+    WidgetTester tester,
+  ) async {
     final docsDir = await getApplicationDocumentsDirectory();
     final dbFile = File(p.join(docsDir.path, 'app_integration.db'));
     // Purge only in Phase A
     if (dbFile.existsSync()) {
       dbFile.deleteSync();
     }
-    
+
     // Wipe keystore at start of Phase A to be clean
     const storage = FlutterSecureStorage();
     await storage.deleteAll();
@@ -41,14 +43,18 @@ void main() {
     await dbService.initialize();
 
     // 9. Vérifier que SQLite3MC est actif
-    final sqlite3mcRes = await dbService.db.customSelect("SELECT sqlite3mc_config('cipher');").get();
+    final sqlite3mcRes = await dbService.db
+        .customSelect("SELECT sqlite3mc_config('cipher');")
+        .get();
     expect(sqlite3mcRes, isNotEmpty);
     final cipherVal = sqlite3mcRes.first.data.values.first as String;
     expect(cipherVal, isNotEmpty);
     print('SQLite3MC active: true (cipher: $cipherVal)');
 
     // 4. Insérer NATIVE_TEST_MARKER
-    await dbService.db.into(dbService.db.contacts).insert(
+    await dbService.db
+        .into(dbService.db.contacts)
+        .insert(
           ContactsCompanion.insert(
             id: 'NATIVE_TEST_MARKER', // THE MARKER
             organizationId: 'org1',

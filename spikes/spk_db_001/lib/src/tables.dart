@@ -16,7 +16,9 @@ class Contacts extends Table {
 class CommercialProfiles extends Table {
   TextColumn get id => text()();
   TextColumn get organizationId => text()();
-  TextColumn get contactId => text().customConstraint('NOT NULL REFERENCES contacts(id) ON UPDATE RESTRICT ON DELETE CASCADE')();
+  TextColumn get contactId => text().customConstraint(
+    'NOT NULL REFERENCES contacts(id) ON UPDATE RESTRICT ON DELETE CASCADE',
+  )();
   TextColumn get prospectStatus => text()();
   IntColumn get firstContactAt => integer()();
   BoolColumn get isClient => boolean().withDefault(const Constant(false))();

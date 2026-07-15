@@ -18,7 +18,9 @@ class DatabaseService {
 
     var mainKey = await _keyManager.getMainKey();
     if (_dbFile.existsSync() && mainKey == null) {
-      throw Exception('DatabaseKeyLostException: Database exists but main key is missing from vault. Cannot open or safely recover.');
+      throw Exception(
+        'DatabaseKeyLostException: Database exists but main key is missing from vault. Cannot open or safely recover.',
+      );
     }
 
     _currentKey = await _keyManager.getOrCreateKey();
@@ -93,7 +95,7 @@ class DatabaseService {
     // 2. Rekeying
     await _keyManager.setRotationState(KeyRotationState.rekeying);
     await _db!.customStatement("PRAGMA rekey = '$newKey';");
-    
+
     // Fermer et rouvrir avec la nouvelle clé pour s'assurer que c'est appliqué en mémoire
     await close();
     _currentKey = newKey;

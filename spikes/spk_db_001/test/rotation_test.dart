@@ -27,65 +27,75 @@ void main() {
   test('Normal key rotation', () async {
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
-    
+
     final oldKey = await keyManager.getMainKey();
     await dbService.rotateKey();
     final newKey = await keyManager.getMainKey();
-    
+
     expect(oldKey, isNot(equals(newKey)));
     await dbService.close();
   });
 
-  test('Recover from interruption during preparation (temp key ignored)', () async {
-    final dbService = DatabaseService(keyManager, dbFile);
-    await dbService.initialize();
-    await dbService.close();
+  test(
+    'Recover from interruption during preparation (temp key ignored)',
+    () async {
+      final dbService = DatabaseService(keyManager, dbFile);
+      await dbService.initialize();
+      await dbService.close();
 
-    // Simuler crash avant PRAGMA rekey
-    await keyManager.setRotationState(KeyRotationState.preparing);
-    await keyManager.saveTempKey('temp_key');
+      // Simuler crash avant PRAGMA rekey
+      await keyManager.setRotationState(KeyRotationState.preparing);
+      await keyManager.saveTempKey('temp_key');
 
-    // Redémarrage
-    final newService = DatabaseService(keyManager, dbFile);
-    await newService.initialize();
+      // Redémarrage
+      final newService = DatabaseService(keyManager, dbFile);
+      await newService.initialize();
 
-    final state = await keyManager.getRotationState();
-    expect(state, KeyRotationState.idle);
-    await newService.close();
-  });
+      final state = await keyManager.getRotationState();
+      expect(state, KeyRotationState.idle);
+      await newService.close();
+    },
+  );
 
-  test('Recover from interruption after rekey but before vault update', () async {
-    if (Platform.isWindows) return; // PRAGMA rekey works natively on Android/iOS via sqlite3mc
+  test(
+    'Recover from interruption after rekey but before vault update',
+    () async {
+      if (Platform.isWindows)
+        return; // PRAGMA rekey works natively on Android/iOS via sqlite3mc
 
-    final dbService = DatabaseService(keyManager, dbFile);
-    await dbService.initialize();
-    
-    final newKey = keyManager.generateNewKey();
-    await keyManager.setRotationState(KeyRotationState.rekeying);
-    await keyManager.saveTempKey(newKey);
-    await dbService.db.customStatement("PRAGMA rekey = '$newKey';");
-    
-    // Crash simulé (dbService ne met pas à jour le vault principal)
-    await dbService.close();
+      final dbService = DatabaseService(keyManager, dbFile);
+      await dbService.initialize();
 
-    // Redémarrage
-    final newService = DatabaseService(keyManager, dbFile);
-    await newService.initialize();
+      final newKey = keyManager.generateNewKey();
+      await keyManager.setRotationState(KeyRotationState.rekeying);
+      await keyManager.saveTempKey(newKey);
+      await dbService.db.customStatement("PRAGMA rekey = '$newKey';");
 
-    final state = await keyManager.getRotationState();
-    expect(state, KeyRotationState.idle);
-    
-    final currentKey = await keyManager.getMainKey();
-    expect(currentKey, newKey); // Le vault a été mis à jour avec la clé temporaire
-    await newService.close();
-  });
+      // Crash simulé (dbService ne met pas à jour le vault principal)
+      await dbService.close();
+
+      // Redémarrage
+      final newService = DatabaseService(keyManager, dbFile);
+      await newService.initialize();
+
+      final state = await keyManager.getRotationState();
+      expect(state, KeyRotationState.idle);
+
+      final currentKey = await keyManager.getMainKey();
+      expect(
+        currentKey,
+        newKey,
+      ); // Le vault a été mis à jour avec la clé temporaire
+      await newService.close();
+    },
+  );
 
   test('Recover from interruption during updatingVault', () async {
     if (Platform.isWindows) return;
 
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
-    
+
     final newKey = keyManager.generateNewKey();
     await dbService.db.customStatement("PRAGMA rekey = '$newKey';");
     await dbService.close();
@@ -108,7 +118,7 @@ void main() {
 
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
-    
+
     final newKey = keyManager.generateNewKey();
     await dbService.db.customStatement("PRAGMA rekey = '$newKey';");
     await dbService.close();
@@ -126,23 +136,27 @@ void main() {
     await newService.close();
   });
 
-  test('Interruption with temp key absent (Blind clear should not corrupt if DB rekey failed)', () async {
-    final dbService = DatabaseService(keyManager, dbFile);
-    await dbService.initialize();
-    await dbService.close();
+  test(
+    'Interruption with temp key absent (Blind clear should not corrupt if DB rekey failed)',
+    () async {
+      final dbService = DatabaseService(keyManager, dbFile);
+      await dbService.initialize();
+      await dbService.close();
 
-    final oldKey = await keyManager.getMainKey();
+      final oldKey = await keyManager.getMainKey();
 
-    // Crash simulé avec state rekeying, MAIS la clé temporaire a été effacée
-    await keyManager.setRotationState(KeyRotationState.rekeying);
-    // tempKey n'est pas sauvegardée
+      // Crash simulé avec state rekeying, MAIS la clé temporaire a été effacée
+      await keyManager.setRotationState(KeyRotationState.rekeying);
+      // tempKey n'est pas sauvegardée
 
-    final newService = DatabaseService(keyManager, dbFile);
-    await newService.initialize(); // DB still uses oldKey, so it should recover using mainKey!
-    
-    expect(await keyManager.getMainKey(), oldKey);
-    await newService.close();
-  });
+      final newService = DatabaseService(keyManager, dbFile);
+      await newService
+          .initialize(); // DB still uses oldKey, so it should recover using mainKey!
+
+      expect(await keyManager.getMainKey(), oldKey);
+      await newService.close();
+    },
+  );
 
   test('Neither key valid throws exception during recovery', () async {
     if (Platform.isWindows) return;
@@ -154,11 +168,11 @@ void main() {
     // Impossible à simuler facilement avec drift sans sqlite3mc, on teste que si les deux clés dans le vault ne marchent pas, ça throw
     // Pour simuler cela, on change les deux clés du vault!
     await keyManager.setRotationState(KeyRotationState.rekeying);
-    
+
     // Corrompre le vault en modifiant les deux clés
     final fakeMainKey = keyManager.generateNewKey();
     final fakeTempKey = keyManager.generateNewKey();
-    
+
     FlutterSecureStorage.setMockInitialValues({
       'samtech_db_key_v1': fakeMainKey,
       'samtech_db_key_temp_v1': fakeTempKey,
@@ -168,7 +182,9 @@ void main() {
     final newService = DatabaseService(keyManager, dbFile);
     expect(
       () async => await newService.initialize(),
-      throwsA(anything) // Devrait throw l'erreur sqlite3mc vu qu'aucune clé ne marche
+      throwsA(
+        anything,
+      ), // Devrait throw l'erreur sqlite3mc vu qu'aucune clé ne marche
     );
   });
 }

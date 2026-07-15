@@ -16,22 +16,24 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) async {
-          await m.createAll();
-        },
-        onUpgrade: (m, from, to) async {
-          if (from == 1) {
-            // Migration from v1 to v2: Add isClient column to CommercialProfiles
-            await m.addColumn(commercialProfiles, commercialProfiles.isClient);
-          }
-        },
-        beforeOpen: (details) async {
-          // Additional setups if needed. Note: foreign_keys is handled in setup.
-        },
-      );
+    onCreate: (m) async {
+      await m.createAll();
+    },
+    onUpgrade: (m, from, to) async {
+      if (from == 1) {
+        // Migration from v1 to v2: Add isClient column to CommercialProfiles
+        await m.addColumn(commercialProfiles, commercialProfiles.isClient);
+      }
+    },
+    beforeOpen: (details) async {
+      // Additional setups if needed. Note: foreign_keys is handled in setup.
+    },
+  );
 
   Future<void> createContactTransaction(
-      Contact contact, CommercialProfile profile) {
+    Contact contact,
+    CommercialProfile profile,
+  ) {
     return transaction(() async {
       await into(contacts).insert(contact);
       await into(commercialProfiles).insert(profile);

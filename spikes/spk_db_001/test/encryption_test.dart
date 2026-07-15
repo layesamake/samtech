@@ -30,7 +30,9 @@ void main() {
     await dbService.initialize();
 
     // Insertion d'une donnée
-    await dbService.db.into(dbService.db.contacts).insert(
+    await dbService.db
+        .into(dbService.db.contacts)
+        .insert(
           ContactsCompanion.insert(
             id: 'c1',
             organizationId: 'org1',
@@ -97,7 +99,13 @@ void main() {
     final newDbService = DatabaseService(keyManager, dbFile);
     expect(
       () async => await newDbService.initialize(),
-      throwsA(isA<Exception>().having((e) => e.toString(), 'message', contains('DatabaseKeyLostException')))
+      throwsA(
+        isA<Exception>().having(
+          (e) => e.toString(),
+          'message',
+          contains('DatabaseKeyLostException'),
+        ),
+      ),
     );
   });
 }

@@ -13,12 +13,13 @@ class KeyManager {
   final FlutterSecureStorage _storage;
 
   KeyManager({FlutterSecureStorage? storage})
-      : _storage = storage ??
-            const FlutterSecureStorage(
-              iOptions: IOSOptions(
-                accessibility: KeychainAccessibility.first_unlock,
-              ),
-            );
+    : _storage =
+          storage ??
+          const FlutterSecureStorage(
+            iOptions: IOSOptions(
+              accessibility: KeychainAccessibility.first_unlock,
+            ),
+          );
 
   Future<String?> getMainKey() async {
     return await _storage.read(key: _keyAlias);
@@ -57,8 +58,10 @@ class KeyManager {
   Future<KeyRotationState> getRotationState() async {
     final stateStr = await _storage.read(key: _keyStateAlias);
     if (stateStr == null) return KeyRotationState.idle;
-    return KeyRotationState.values
-        .firstWhere((e) => e.name == stateStr, orElse: () => KeyRotationState.idle);
+    return KeyRotationState.values.firstWhere(
+      (e) => e.name == stateStr,
+      orElse: () => KeyRotationState.idle,
+    );
   }
 
   Future<void> clearRotationState() async {

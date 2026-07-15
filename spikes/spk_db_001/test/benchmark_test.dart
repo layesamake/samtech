@@ -36,7 +36,9 @@ void main() {
     sw.reset();
     await dbService.db.transaction(() async {
       for (int i = 0; i < 5000; i++) {
-        await dbService.db.into(dbService.db.contacts).insert(
+        await dbService.db
+            .into(dbService.db.contacts)
+            .insert(
               ContactsCompanion.insert(
                 id: 'c_$i',
                 organizationId: 'org1',
@@ -50,7 +52,9 @@ void main() {
     print('Insert 5000 rows in transaction: ${sw.elapsedMilliseconds} ms');
 
     sw.reset();
-    final count = await dbService.db.customSelect('SELECT COUNT(*) as c FROM contacts').getSingle();
+    final count = await dbService.db
+        .customSelect('SELECT COUNT(*) as c FROM contacts')
+        .getSingle();
     expect(count.read<int>('c'), 5000);
     print('Read 5000 rows count: ${sw.elapsedMilliseconds} ms');
 
