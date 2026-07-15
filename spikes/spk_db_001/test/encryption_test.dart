@@ -56,7 +56,7 @@ void main() {
   });
 
   test('Database rejects incorrect key', () async {
-    if (Platform.isWindows) return;
+    if (Platform.isWindows) { return; }
 
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
@@ -75,7 +75,7 @@ void main() {
   });
 
   test('Database file does not contain plain SQLite header', () async {
-    if (Platform.isWindows) return;
+    if (Platform.isWindows) { return; }
 
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();

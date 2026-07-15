@@ -60,8 +60,9 @@ void main() {
   test(
     'Recover from interruption after rekey but before vault update',
     () async {
-      if (Platform.isWindows)
+      if (Platform.isWindows) {
         return; // PRAGMA rekey works natively on Android/iOS via sqlite3mc
+      }
 
       final dbService = DatabaseService(keyManager, dbFile);
       await dbService.initialize();
@@ -91,7 +92,7 @@ void main() {
   );
 
   test('Recover from interruption during updatingVault', () async {
-    if (Platform.isWindows) return;
+    if (Platform.isWindows) { return; }
 
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
@@ -114,7 +115,7 @@ void main() {
   });
 
   test('Recover from interruption during cleanup', () async {
-    if (Platform.isWindows) return;
+    if (Platform.isWindows) { return; }
 
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
@@ -159,7 +160,7 @@ void main() {
   );
 
   test('Neither key valid throws exception during recovery', () async {
-    if (Platform.isWindows) return;
+    if (Platform.isWindows) { return; }
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
     await dbService.close(); // DB is encrypted with original mainKey
