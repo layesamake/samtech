@@ -24,6 +24,7 @@ samtech/
 ├── docs/
 ├── scripts/
 ├── test/
+├── melos.yaml ou configuration Melos racine
 └── pubspec.yaml
 ```
 
@@ -175,10 +176,3 @@ Génération autorisée : Drift, Riverpod et sérialisation versionnée. Chaque 
 - PDF clients ;
 - fichiers `.env` contenant un secret ;
 - logs avec données personnelles.
-
-## 10. Bootstrap du Sprint 0
-
-Depuis le 14 juillet 2026, le monorepo utilise les Pub workspaces avec Melos 8.
-Chaque membre déclare `resolution: workspace` et la liste explicite des membres
-est maintenue dans le `pubspec.yaml` racine. Les commandes reproductibles sont
-documentées dans `SPRINT_0.md`.

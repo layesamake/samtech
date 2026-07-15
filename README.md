@@ -4,8 +4,7 @@ Monorepo de référence pour les produits SAMTECH, à commencer par **SAMTECH CR
 
 ## État
 
-Sprint 0 initialisé : application Flutter Android/iOS, packages partagés,
-workspace Melos, Riverpod, go_router, analyse statique et tests du socle.
+Fondations documentaires et structure de développement initialisées. Le code Flutter sera créé après validation des spécifications.
 
 ## Structure
 
@@ -21,8 +20,7 @@ workspace Melos, Riverpod, go_router, analyse statique et tests du socle.
 1. Lire `docs/00_FOUNDATION/SAMTECH_MANIFESTO.md` et `docs/01_PRODUCT/VISION.md`.
 2. Valider le périmètre dans `docs/02_ANALYSIS/CAHIER_DES_CHARGES.md`.
 3. Consigner toute décision structurante dans `docs/00_FOUNDATION/DECISIONS.md`.
-4. Installer Flutter stable et exécuter `dart pub get` à la racine.
-5. Lancer les scripts Melos `format`, `analyze` et `test`.
+4. Installer Flutter stable, puis générer les projets uniquement après validation de l'architecture.
 
 ## Règle de gouvernance
 

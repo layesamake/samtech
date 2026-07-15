@@ -27,9 +27,6 @@ Utiliser en priorité les icônes Material Symbols ou les équivalents Cupertino
 | Puce ou statut | 16–18 | composant complet 44–48 |
 | Illustration d'état | 48–80 | non interactive |
 
-Le token `SamtechIconSize.illustration` fixe à 64 points la taille initiale des
-illustrations d'état du socle Flutter.
-
 ## 4. Mappage conceptuel
 
 | Concept | Icône recommandée | Libellé visible requis |

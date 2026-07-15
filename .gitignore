@@ -12,7 +12,6 @@ doc/api/
 
 # Android
 **/android/.gradle/
-**/android/.kotlin/
 **/android/local.properties
 **/android/key.properties
 **/android/**/GeneratedPluginRegistrant.java
