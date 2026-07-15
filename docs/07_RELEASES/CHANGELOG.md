@@ -50,6 +50,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 - Documentation technique remplacée par une architecture prête pour les spikes et le découpage des développements.
 - Monorepo migré vers Pub Workspaces et Melos 8.2.2, avec un seul lockfile racine et des commandes Melos locales.
 - Baseline portée à Flutter 3.44.6, Dart 3.12.2, Riverpod 3.3.2, go_router 17.3.0, `flutter_lints` 6.0.0 et `lints` 6.1.0.
+- Workflow de qualité migré vers `actions/checkout@v6` afin d'utiliser l'environnement Node.js 24 maintenu par GitHub Actions.
 
 ### Validation Sprint 0
 

@@ -246,7 +246,11 @@ Résultat :
 
 Aucun indice de copie substantielle de l'ancien code n'a été trouvé. Une comparaison de hashes prouve l'absence de copie exacte, pas l'absence théorique de toute réécriture sémantique.
 
-## 8. Risques résiduels et décisions différées
+## 8. Validation CI distante post-audit
+
+La Pull Request `#1` a déclenché le workflow de qualité sur GitHub Actions. Le premier passage s'est terminé avec succès en 2 min 02 s, mais a signalé la dépréciation de Node.js 20 dans `actions/checkout@v4`. Le workflow a donc été migré vers `actions/checkout@v6`, version officielle utilisant Node.js 24.
+
+## 9. Risques résiduels et décisions différées
 
 | Risque/limite | Impact | Action requise |
 |---|---|---|
@@ -254,10 +258,9 @@ Aucun indice de copie substantielle de l'ancien code n'a été trouvé. Une comp
 | Variant Android `release` encore signé avec la clé debug du template | Bloquant avant publication, hors Sprint 0 | Configurer une signature de production sécurisée avant toute release. |
 | `outline` `#CBD5E1` sur blanc a un contraste d'environ 1,48:1 | Potentiellement insuffisant pour la limite d'un futur contrôle non textuel | Revalider ou remplacer le token avant le premier TextField/OutlinedButton ; aucun tel composant n'est livré au Sprint 0. |
 | Minima de plateformes issus du template, politique produit non validée | Risque de compatibilité lors des futurs plugins | Décider les minima Android/iOS après les spikes natifs. |
-| Workflow GitHub Actions inspecté mais non déclenché à distance | La preuve CI distante reste absente | Lancer le workflow dès que les changements sont commités/poussés. |
 | Pub signale neuf versions transitives plus récentes incompatibles avec la résolution courante | Entretien futur, sans écart direct Sprint 0 identifié | Réexaminer par lot avec `flutter pub outdated`, sans forcer de résolution non testée. |
 
-## 9. Verdict
+## 10. Verdict
 
 Après correction, le Sprint 0 satisfait son périmètre technique vérifiable sur Windows :
 
@@ -272,7 +275,7 @@ Après correction, le Sprint 0 satisfait son périmètre technique vérifiable s
 
 Le socle peut être accepté comme fondation Android du Sprint 0. Il ne doit pas être présenté comme validé pour une livraison iOS ni comme prêt pour une publication Android release tant que les réserves de la section 8 ne sont pas levées.
 
-## 10. Références techniques de politique
+## 11. Références techniques de politique
 
 - Pub Workspaces : <https://dart.dev/tools/pub/workspaces>
 - Migration Melos 8 : <https://melos.invertase.dev/guides/migrations>
