@@ -92,7 +92,9 @@ void main() {
   );
 
   test('Recover from interruption during updatingVault', () async {
-    if (Platform.isWindows) { return; }
+    if (Platform.isWindows) {
+      return;
+    }
 
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
@@ -115,7 +117,9 @@ void main() {
   });
 
   test('Recover from interruption during cleanup', () async {
-    if (Platform.isWindows) { return; }
+    if (Platform.isWindows) {
+      return;
+    }
 
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
@@ -160,7 +164,9 @@ void main() {
   );
 
   test('Neither key valid throws exception during recovery', () async {
-    if (Platform.isWindows) { return; }
+    if (Platform.isWindows) {
+      return;
+    }
     final dbService = DatabaseService(keyManager, dbFile);
     await dbService.initialize();
     await dbService.close(); // DB is encrypted with original mainKey
