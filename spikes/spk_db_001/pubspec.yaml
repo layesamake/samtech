@@ -1,0 +1,30 @@
+name: spk_db_001
+description: "Prototype SPK-DB-001 (Stockage Sécurisé & Drift)"
+version: 0.1.0
+publish_to: 'none'
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  drift: ^2.34.1
+  drift_flutter: ^0.3.1
+  sqlite3: ^3.4.0
+  flutter_secure_storage: ^10.3.1
+  path: ^1.9.0
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  drift_dev: ^2.34.4
+  build_runner: ^2.4.13
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+# Configuration des hooks de build natifs pour SQLite3MultipleCiphers
+# Effective à partir de sqlite3 3.x avec le système de native assets
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc

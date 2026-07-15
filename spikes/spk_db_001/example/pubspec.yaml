@@ -1,0 +1,36 @@
+name: example
+description: "SPK-DB-001 Native Test Harness"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  spk_db_001:
+    path: ..
+  path: ^1.9.1
+  path_provider: ^2.1.6
+  flutter_secure_storage: ^10.3.1
+  crypto: ^3.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  integration_test:
+    sdk: flutter
+
+# Configuration des hooks de build natifs pour SQLite3MultipleCiphers
+# C'est l'application compilée : les hooks doivent être déclarés ici
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc
+
+flutter:
+  uses-material-design: true
