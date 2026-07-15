@@ -2,9 +2,9 @@
 
 | Élément | Valeur |
 |---|---|
-| Statut | Candidats vérifiés, versions à épingler au démarrage du code |
-| Version | 1.0 |
-| Date | 14 juillet 2026 |
+| Statut | Baseline Sprint 0 définie ; candidats métier soumis aux spikes |
+| Version | 1.1 |
+| Date | 15 juillet 2026 |
 
 ## 1. Politique
 
@@ -12,22 +12,39 @@
 - vérifier maintenance, licence, plateformes, changelog et issues critiques ;
 - encapsuler toute dépendance native ou critique ;
 - éviter deux packages pour la même responsabilité ;
-- épingler via `pubspec.lock` pour les applications ;
+- utiliser un Pub Workspace et versionner son unique `pubspec.lock` racine ;
+- interdire les locks enfants et les `pubspec_overrides.yaml` persistants ;
+- faire respecter le lockfile en CI avec `flutter pub get --enforce-lockfile` ;
 - automatiser l'audit et mettre à jour par lots testés ;
-- ne jamais copier une version depuis ce document : utiliser la dernière version stable compatible au moment du bootstrap.
+- déclarer les contraintes dans les manifestes et consigner ici la baseline effectivement retenue.
 
-## 2. Candidats principaux
+## 2. Baseline du Sprint 0
+
+| Élément | Version/contrainte retenue | Usage |
+|---|---|---|
+| Flutter | `3.44.6` stable | SDK CI et développement |
+| Dart | `3.12.2` | SDK fourni par Flutter 3.44.6 |
+| Melos | `8.2.2` | orchestration locale via `dart run melos` |
+| `flutter_riverpod` | `^3.3.2` | bootstrap et injection |
+| `go_router` | `^17.3.0` | navigation déclarative |
+| `flutter_lints` | `^6.0.0` | règles Flutter |
+| `lints` | `^6.1.0` | règles des packages Dart réservés |
+
+Melos est une dépendance de développement racine, jamais une installation globale. L'application dépend de `ui_kit` par contrainte `^0.1.0` ; Pub Workspaces résout automatiquement cette contrainte vers le membre local correspondant.
+
+## 3. Candidats principaux
 
 | Besoin | Package candidat | Décision |
 |---|---|---|
-| État et injection | `flutter_riverpod`, `riverpod_annotation` | retenu sous réserve du spike |
-| Navigation | `go_router`, éventuellement `go_router_builder` | retenu |
-| Base relationnelle | `drift`, `drift_flutter` | retenu logiquement |
+| État et injection | `flutter_riverpod` | bootstrap minimal implémenté au Sprint 0 |
+| Navigation | `go_router` | bootstrap minimal implémenté au Sprint 0 |
+| Génération Riverpod/routeur | `riverpod_annotation`, `riverpod_generator`, `go_router_builder` | non retenue au Sprint 0 ; spike préalable |
+| Base relationnelle | `drift`, `drift_flutter` | candidat privilégié ; ajout conditionné à SPK-DB-001 |
 | SQLite chiffré | intégration SQLCipher compatible Drift | spike bloquant |
 | Coffre sécurisé | `flutter_secure_storage` ou adaptateur natif | candidat, tester migrations/backup |
 | Biométrie | `local_auth` | candidat officiel Flutter |
 | Notifications | `flutter_local_notifications`, `timezone` | candidat |
-| HTTP licence | `http` | suffisant, encapsulé |
+| HTTP licence | `http` | candidat minimal ; à encapsuler s'il est retenu |
 | Signature | `cryptography` ou binding validé | spike sécurité |
 | PDF | `pdf`, `printing` | candidat |
 | Partage | `share_plus` | candidat |
@@ -35,12 +52,12 @@
 | Fichiers | `file_selector`, `path_provider` | candidats |
 | Informations app | `package_info_plus` | candidat |
 | UUID | `uuid` | candidat |
-| Localisation | `intl`, localisation Flutter | retenu |
-| Sérialisation | `json_serializable` | snapshots/API versionnés |
+| Localisation | `intl`, localisation Flutter | candidat, non intégré au Sprint 0 |
+| Sérialisation | `json_serializable` | candidat, non intégré au Sprint 0 |
 | Logs | `logging` avec façade SAMTECH | candidat |
-| Génération | `build_runner`, `drift_dev`, `riverpod_generator` | nécessaire si spikes validés |
+| Génération | `build_runner`, `drift_dev`, `riverpod_generator` | conditionnels aux choix techniques validés ; absents du Sprint 0 |
 
-## 3. Dépendances volontairement évitées au départ
+## 4. Dépendances volontairement évitées au départ
 
 - service locator global ;
 - bibliothèque fonctionnelle lourde uniquement pour un type Result ;
@@ -50,7 +67,7 @@
 - package d'identifiant matériel intrusif ;
 - bibliothèque de cryptographie non auditée ou algorithme maison.
 
-## 4. Spikes obligatoires
+## 5. Spikes obligatoires
 
 ### SPK-DB-001 — Drift + SQLite chiffré
 
@@ -72,11 +89,13 @@ Valider permissions, fuseaux, redémarrage, limites Android/iOS et réconciliati
 
 Valider encodage des numéros/messages, application absente, retour utilisateur et partage PDF.
 
-## 5. Exigences de plateforme
+## 6. Exigences de plateforme
 
-Les versions minimales Android/iOS seront définies après résolution des candidats. Les packages récents peuvent relever les exigences SDK, Java, Kotlin, Gradle ou iOS ; le projet doit choisir consciemment le compromis entre sécurité, maintenance et parc d'appareils ciblé.
+Les projets Android et iOS utilisent les minima effectifs du template Flutter 3.44.6 (dont iOS 13.0 et `flutter.minSdkVersion` côté Android), mais la politique produit de compatibilité reste à valider après les spikes. Les packages récents peuvent relever les exigences SDK, Java, Kotlin, Gradle ou iOS ; le projet doit choisir consciemment le compromis entre sécurité, maintenance et parc d'appareils ciblé.
 
-## 6. Références vérifiées
+La validation iOS n'a pas été réalisée pendant le Sprint 0, l'environnement d'audit étant Windows. Elle requiert une machine macOS avant livraison.
+
+## 7. Références vérifiées
 
 - Riverpod : https://riverpod.dev/
 - Drift : https://drift.simonbinder.eu/

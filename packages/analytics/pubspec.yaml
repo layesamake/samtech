@@ -1,0 +1,12 @@
+name: analytics
+description: Frontière réservée aux analytics SAMTECH, sans API ni implémentation au Sprint 0.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: '>=3.12.2 <4.0.0'
+
+resolution: workspace
+
+dev_dependencies:
+  lints: ^6.1.0

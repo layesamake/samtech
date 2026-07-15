@@ -2,14 +2,49 @@ name: samtech_workspace
 description: Workspace racine de la plateforme logicielle SAMTECH.
 publish_to: none
 version: 0.1.0
+repository: https://github.com/layesamake/samtech.git
 
 environment:
-  sdk: '>=3.5.0 <4.0.0'
+  sdk: '>=3.12.2 <4.0.0'
+
+workspace:
+  - apps/samtech_crm
+  - packages/analytics
+  - packages/authentication
+  - packages/backup
+  - packages/license_manager
+  - packages/notifications
+  - packages/pdf_engine
+  - packages/security
+  - packages/ui_kit
 
 dev_dependencies:
-  melos: ^6.3.0
+  flutter_lints: ^6.0.0
+  melos: 8.2.2
 
 melos:
-  packages:
-    - apps/**
-    - packages/**
+  scripts:
+    format:
+      description: Vérifier le formatage sans modifier les fichiers.
+      run: dart format --output=none --set-exit-if-changed apps packages
+
+    analyze:
+      description: Exécuter l'analyse statique du workspace sans modifier les fichiers.
+      run: flutter analyze --no-pub --fatal-infos --fatal-warnings
+
+    test:
+      description: Exécuter les tests Flutter présents au Sprint 0.
+      exec:
+        command: flutter test --no-pub
+        concurrency: 1
+        failFast: true
+      packageFilters:
+        flutter: true
+        dirExists: test
+
+    quality:
+      description: Vérifier le formatage, l'analyse et tous les tests.
+      steps:
+        - format
+        - analyze
+        - test

@@ -10,6 +10,11 @@ coverage/
 doc/api/
 **/generated_plugin_registrant.dart
 
+# Pub Workspace: seul le lockfile racine est versionné.
+**/pubspec.lock
+!/pubspec.lock
+**/pubspec_overrides.yaml
+
 # Android
 **/android/.gradle/
 **/android/local.properties
