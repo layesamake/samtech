@@ -45,7 +45,7 @@ Melos est une dépendance de développement racine, jamais une installation glob
 | Biométrie | `local_auth` | candidat officiel Flutter |
 | Notifications | `flutter_local_notifications`, `timezone` | candidat |
 | HTTP licence | `http` | candidat minimal ; à encapsuler s'il est retenu |
-| Signature | `cryptography` ou binding validé | spike sécurité |
+| Signature | `cryptography` | validé avec réserves par SPK-LIC-001 ; limites dans son rapport d'audit |
 | PDF | `pdf`, `printing` | candidat |
 | Partage | `share_plus` | candidat |
 | URL WhatsApp | `url_launcher` | candidat avec repli |
@@ -76,6 +76,17 @@ Valider ouverture background, migrations, Android/iOS, rotation de clé, sauvega
 ### SPK-LIC-001 — Signature de licence
 
 Valider génération serveur, vérification mobile, taille du jeton, rotation de clés et résistance aux erreurs d'horloge.
+
+Dépendances directes et de développement du package lors de l'audit :
+
+| Dépendance | Contrainte | Résolue | Usage | Maintenance / licence |
+|---|---:|---:|---|---|
+| `cryptography` | `^2.9.0` | `2.9.0` | primitive Ed25519 et types de clé/signature | dint.dev, Apache-2.0 |
+| `meta` | `^1.15.0` | `1.18.0` | annotations d'immutabilité | dart.dev, BSD-3-Clause |
+| `lints` (dev) | `^6.1.0` | `6.1.0` | analyse statique Dart | dart.dev, BSD-3-Clause |
+| `test` (dev) | `^1.24.0` | `1.31.0` | tests unitaires/adversariaux | dart.dev, BSD-3-Clause |
+
+`convert` 3.1.2 reste transitif dans le lockfile, notamment via l'outillage de test/analyse ; il n'est ni importé ni déclaré directement par `license_manager`, qui utilise `dart:convert`. Le package n'a aucune dépendance Flutter. `cryptography` est activement publié mais reste un composant tiers : aucune certification ou revue cryptographique indépendante du package n'est revendiquée. Un inventaire automatisé complet des licences transitives reste à mettre en place.
 
 ### SPK-BCK-001 — Enveloppe de sauvegarde
 

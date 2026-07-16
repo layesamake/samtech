@@ -102,12 +102,21 @@ Les golden tests sont limités aux composants stables et documents visuels criti
 
 - contrat API avec serveur simulé ;
 - signature correcte/incorrecte ;
+- vecteur Ed25519/JWS indépendant de la RFC 8037 ;
+- segments compacts, alphabet base64url canonique, tailles et signatures de 0/63/64/65 octets ;
+- UTF-8/JSON invalides, racines non-objet et doublons de clés, y compris échappées ;
+- allowlist exacte du header JOSE et rejet de tout algorithme autre que `EdDSA` ;
+- trousseau : doublons, type Ed25519, clé courante/ancienne/désactivée/retirée ;
+- chaque claim absent, de mauvais type, vide, excessif ou invalide ;
+- frontières exactes de `not_before`, `recheck_after`, `grace_ends_at` et recul d'horloge ;
 - activation idempotente ;
 - offline avant/après échéance ;
 - horloge reculée ;
 - révocation reçue ;
 - transfert ;
 - jeton d'une autre application ou installation.
+
+Les tests Dart purs s'exécutent dans le package avec `dart test`, et dans le workspace avec `dart run melos run test:dart --no-select`. La porte complète est `dart run melos run quality --no-select`. Un nombre global de tests ne remplace pas les catégories adversariales ci-dessus.
 
 ## 10. Tests d'intégration natifs
 
@@ -145,4 +154,3 @@ Le CI ne possède aucun certificat ou secret en clair. Les signatures de livrais
 ## 14. Critère de sortie
 
 Une story P0 n'est terminée que si ses critères d'acceptation, règles métier, erreurs et plateformes concernées sont testés. Un pourcentage global de couverture ne remplace pas cette traçabilité.
-

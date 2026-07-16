@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
-  # Job 1 : workspace principal (samtech_crm + ui_kit)
+  # Job 1 : workspace principal (application + packages Flutter et Dart)
   # Exclut spikes/** via analysis_options.yaml — les dépendances du spike
   # ne font pas partie du workspace Pub racine.
   # ─────────────────────────────────────────────────────────────────────────────
