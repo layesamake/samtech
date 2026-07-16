@@ -345,7 +345,7 @@ La première activation nécessite une clé valide, une connexion au service SAM
 
 ### BR-LIC-002 — Signature
 
-La licence locale est signée par le serveur. L'application embarque uniquement la clé publique nécessaire à sa vérification.
+La licence locale est signée par le serveur. L'application embarque uniquement un ensemble approuvé de clés publiques Ed25519 nécessaires à sa vérification, sans aucune clé privée de signature SAMTECH.
 
 ### BR-LIC-003 — États
 
@@ -410,4 +410,3 @@ La Starter gère un seul profil d'entreprise actif par installation.
 - conservation et suppression des données personnelles ;
 - versions minimales Android et iOS ;
 - limites de volume garanties pour la Starter.
-

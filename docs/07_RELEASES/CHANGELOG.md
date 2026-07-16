@@ -40,6 +40,9 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 - Workflow GitHub Actions pour le formatage non mutant, l'analyse statique et les tests Flutter réellement présents.
 - Documentation du socle technique et de ses limites de validation.
 - Rapport d'audit indépendant du Sprint 0 avec état initial, corrections, contrôles finaux et risques résiduels.
+- Prototype SPK-LIC-001 de vérification JWS Compact Ed25519 avec profil JOSE fermé, parsing canonique, claims et bindings bornés, rotation de clés et horloge injectée.
+- Matrice de tests adversariaux SPK-LIC-001 et vecteur normatif RFC 8037 indépendant.
+- Rapport d'audit indépendant SPK-LIC-001 avec constats initiaux, corrections, preuves et risques résiduels.
 
 ### Modifié
 
@@ -51,6 +54,7 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 - Monorepo migré vers Pub Workspaces et Melos 8.2.2, avec un seul lockfile racine et des commandes Melos locales.
 - Baseline portée à Flutter 3.44.6, Dart 3.12.2, Riverpod 3.3.2, go_router 17.3.0, `flutter_lints` 6.0.0 et `lints` 6.1.0.
 - Workflow de qualité migré vers `actions/checkout@v6` afin d'utiliser l'environnement Node.js 24 maintenu par GitHub Actions.
+- Le package `license_manager`, initialement réservé au Sprint 0, expose désormais le seul vérificateur local du prototype ; activation, stockage, réseau, révocation distante, transfert et mode restreint restent hors périmètre.
 
 ### Validation Sprint 0
 

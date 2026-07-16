@@ -32,8 +32,8 @@ melos:
       description: Exécuter l'analyse statique du workspace sans modifier les fichiers.
       run: flutter analyze --no-pub --fatal-infos --fatal-warnings
 
-    test:
-      description: Exécuter les tests Flutter présents au Sprint 0.
+    test:flutter:
+      description: Exécuter les tests Flutter.
       exec:
         command: flutter test --no-pub
         concurrency: 1
@@ -41,6 +41,22 @@ melos:
       packageFilters:
         flutter: true
         dirExists: test
+
+    test:dart:
+      description: Exécuter les tests Dart purs.
+      exec:
+        command: dart test
+        concurrency: 1
+        failFast: true
+      packageFilters:
+        flutter: false
+        dirExists: test
+
+    test:
+      description: Exécuter tous les tests du workspace.
+      steps:
+        - test:flutter
+        - test:dart
 
     quality:
       description: Vérifier le formatage, l'analyse et tous les tests.

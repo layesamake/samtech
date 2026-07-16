@@ -153,3 +153,11 @@ Ce document consigne les décisions structurantes. Une décision validée ne doi
 - Décision : déployer l'API et le portail de licences comme composants serveur distincts, sans données commerciales CRM.
 - Motif : réduire l'impact d'une compromission et maintenir la Starter offline-first.
 - Conséquences : contrat API versionné, MFA et audit administrateur, clé privée côté KMS/serveur uniquement.
+
+## ADR-020 — Signature des licences par JWS Ed25519
+
+- Date : 15 juillet 2026
+- Statut : validé avec réserves par l'audit SPK-LIC-001
+- Décision : utiliser JWS Compact, l'identifiant d'algorithme JOSE `EdDSA` et exclusivement des clés Ed25519 pour la vérification locale des licences.
+- Motif : format interopérable (RFC 7515/RFC 8037), vérification asymétrique sans clé privée dans le client et signatures de 64 octets.
+- Conséquences : ajout de `cryptography`, profil JOSE fermé, parsing strict, trousseau de clés publiques authentiquement distribué et horloge injectée. JWS apporte authenticité et intégrité, pas confidentialité ; il ne résout ni la révocation offline ni le contournement par un client patché.

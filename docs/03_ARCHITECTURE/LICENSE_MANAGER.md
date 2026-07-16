@@ -30,7 +30,7 @@ flowchart LR
     PORTAL["Admin Portal"] --> API
 ```
 
-Le package mobile contient les modèles, la machine d'états, le vérificateur et les ports. Le serveur et le portail sont des produits séparés et ne partagent jamais leur clé privée avec le mobile.
+Ce diagramme décrit la cible. SPK-LIC-001 implémente uniquement le vérificateur, les claims, le contexte, l'évaluation et le port `LicenseTokenVerifier`. Le stockage, le réseau, l'activation et l'orchestration des transitions restent futurs. Le serveur et le portail sont des produits séparés ; aucune clé privée de signature SAMTECH n'est distribuée au mobile.
 
 ## 3. Identité d'installation
 
@@ -45,7 +45,7 @@ Une réinstallation peut créer une nouvelle identité et exiger un transfert/r�
 
 ## 4. Jeton signé
 
-Le format peut être JWS compact, COSE ou enveloppe canonique équivalente. Le choix final dépend du spike cryptographique.
+Le format retenu (suite au SPK-LIC-001) est JWS Compact Serialization, avec signature EdDSA (Ed25519).
 
 Claims minimaux :
 
@@ -66,7 +66,7 @@ Claims minimaux :
 | `max_devices` | information d'offre |
 | `key_id` | clé publique de vérification |
 
-Le jeton ne contient ni nom client, ni téléphone, ni donnée CRM.
+Le jeton ne contient ni nom client, ni téléphone, ni donnée CRM. JWS signe mais ne chiffre pas : le header et le payload sont lisibles et ne sont jamais confidentiels.
 
 ## 5. Machine d'états
 
@@ -86,7 +86,7 @@ stateDiagram-v2
     Valid --> Invalid: signature/liaison invalides
 ```
 
-Un jeton mal signé, destiné à une autre application ou autre installation est `invalid`, jamais simplement `expired`.
+Dans le prototype, un jeton mal signé, destiné à une autre application ou installation lève une exception typée. L'orchestrateur applicatif futur la traduira en état `invalid`, jamais simplement `expired`, sans supprimer les données CRM. `revoked` et `transferable` proviendront uniquement de flux serveur authentifiés ; ils ne sont pas simulés par la vérification locale.
 
 ## 6. Activation
 
@@ -106,6 +106,8 @@ Saisir clé
 Le mobile ne stocke la clé saisie complète que si la politique de récupération l'exige explicitement ; le jeton suffit au fonctionnement courant.
 
 ## 7. Vérification périodique
+
+Cette section décrit l'orchestration cible, non implémentée par SPK-LIC-001. Le vérificateur pur ne connaît pas l'état réseau : après `recheck_after`, il retourne `grace` et `requiresOnlineCheck` jusqu'à la borne de grâce incluse.
 
 - déclenchée au démarrage ou retour au premier plan lorsque `recheck_after` est dépassé ;
 - jamais bloquante si la grâce locale valide s'applique ;
@@ -164,12 +166,13 @@ Fonctions minimales : créer/importer une licence, rechercher, voir activations,
 
 ## 13. Interface du package
 
-Ports conceptuels :
+Port implémenté par SPK-LIC-001 : `LicenseTokenVerifier`.
+
+Ports conceptuels futurs :
 
 ```text
 LicenseRepository
 LicenseApi
-LicenseTokenVerifier
 InstallationIdentityStore
 SecureStorage
 Clock
@@ -203,10 +206,8 @@ ClearInvalidActivation
 ## 15. Paramètres encore ouverts
 
 - durée de grâce et fréquence de vérification ;
-- algorithme et format du jeton ;
 - politique d'essai ;
 - nombre et fréquence des transferts ;
 - mode restreint exact ;
 - attestation de l'application/appareil ;
 - règles d'achat et restauration propres aux boutiques.
-

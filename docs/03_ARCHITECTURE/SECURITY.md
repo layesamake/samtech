@@ -43,7 +43,7 @@ WhatsApp, les applications de partage, le stockage choisi par l'utilisateur et l
 |---|---|---|
 | Vol du téléphone | accès aux contacts | verrouillage système, PIN app, DB chiffrée |
 | Extraction du fichier | copie de SQLite | clé séparée dans coffre natif |
-| APK/IPA modifié | contournement licence | signature boutique, obfuscation, jeton signé, contrôles d'intégrité raisonnables |
+| APK/IPA modifié | contournement licence | signature boutique, obfuscation et contrôles d'intégrité raisonnables ; un jeton signé empêche le forgeage face à un vérificateur honnête mais pas le patch du vérificateur |
 | Clonage de licence | copie du jeton | liaison à une clé d'installation et signature serveur |
 | Interception réseau | activation falsifiée | TLS et jeton asymétriquement signé |
 | Serveur compromis | émission abusive | clés privées isolées, rôles, audit, rotation |
@@ -108,13 +108,13 @@ La procédure « PIN oublié » est une décision produit/sécurité ouverte. El
 - aucune clé privée dans le client ;
 - pas de désactivation de TLS en production ;
 - certificate pinning non retenu par défaut avant analyse de rotation et disponibilité ;
-- les réponses de licence restent vérifiables hors TLS grâce à la signature du jeton.
+- les seules données couvertes par la signature du jeton restent vérifiables hors TLS ; les métadonnées externes ne le deviennent pas automatiquement.
 
 ## 8. Licence
 
-Le serveur signe un jeton lié à une identité d'installation générée localement. Le matériel privé d'installation reste dans le coffre lorsque le protocole choisi utilise une preuve de possession. La clé publique SAMTECH embarquée vérifie le jeton hors ligne.
+Le serveur signe un jeton lié à une identité d'installation générée localement. Le matériel privé d'installation reste dans le coffre lorsque le protocole choisi utilise une preuve de possession. Un ensemble approuvé de clés publiques Ed25519, distribué par une chaîne authentifiée, vérifie le jeton hors ligne. Le JWS est signé, pas chiffré ; son contenu n'est pas confidentiel.
 
-Une modification de l'application ne donne jamais accès à la clé privée SAMTECH. Une révocation n'est connue hors ligne qu'à la prochaine vérification ; la période de grâce borne ce risque.
+La clé privée SAMTECH n'est pas embarquée : modifier le client ne suffit donc pas à l'extraire, hors compromission distincte du serveur ou de la chaîne de build. Un client patché peut toutefois ignorer une décision locale. Une révocation n'est connue hors ligne qu'à la prochaine vérification ; la période de grâce borne ce risque.
 
 ## 9. Sauvegarde
 
@@ -200,10 +200,9 @@ La façade de logs redige par défaut. Les identifiants corrélables sont aléat
 ## 17. Points ouverts
 
 - KDF exacte du PIN et de la sauvegarde ;
-- algorithme de signature du jeton ;
+- processus opérationnel de rotation des clés Ed25519 ;
 - politique PIN oublié ;
 - durée de grâce ;
 - rôle éventuel de l'attestation Play Integrity/App Attest ;
 - politique de capture d'écran sur écrans sensibles ;
 - versions minimales des OS.
-
